@@ -1,0 +1,977 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{afterpage}
+\usepackage{cleveref}
+
+% cleveref-Namen für eigene Theorem-Umgebungen
+\crefname{satz}{Satz}{Sätze}
+\crefname{lemma}{Lemma}{Lemmata}
+\crefname{proposition}{Proposition}{Propositionen}
+\crefname{korollar}{Korollar}{Korollare}
+\crefname{definition}{Definition}{Definitionen}
+\crefname{bemerkung}{Bemerkung}{Bemerkungen}
+\crefname{beispiel}{Beispiel}{Beispiele}
+\crefname{equation}{Gl.}{Gl.}
+\crefname{table}{Tab.}{Tab.}
+\crefname{section}{Abschnitt}{Abschnitte}
+
+\geometry{a4paper, margin=2.5cm}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=blue!60!black,
+  urlcolor=blue!60!black
+}
+
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}{Beispiel}[section]
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}[section]
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\vek}[1]{\boldsymbol{#1}}
+
+
+\title{\textbf{Differentialgeometrische Analyse der Kegelhelix}\\[0.5em]
+\large Vollständige Darstellung von Krümmung, Torsion,\\
+Frenet-Rahmen, Bogenlänge und geometrischen Eigenschaften}
+\author{Dogan Balban}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Diese Arbeit präsentiert eine vollständige differentialgeometrische Analyse der Kegelhelix, definiert durch die Parametrisierung
+\begin{equation*}
+\gamma(\theta) =
+\begin{pmatrix}
+\dfrac{6}{\pi^2}\theta \cos(\theta) \\[8pt]
+\dfrac{6}{\pi^2}\theta \sin(\theta) \\[8pt]
+-\dfrac{3}{4} + \dfrac{3}{\pi}\,\theta
+\end{pmatrix}, \qquad \theta \geq 0.
+\end{equation*}
+Die Kurve vereint die Eigenschaften einer Archimedischen Spirale (in der $xy$-Projektion) mit einer linearen Höhenzunahme und liegt vollständig auf der Kegelfläche $z = -\frac{3}{4} + \frac{\pi}{2}r$. Es werden Tangentialvektor, Normalenvektor, Binormalvektor (Frenet-Rahmen), Krümmung, Torsion, Bogenlänge, Steigungswinkel sowie asymptotische Eigenschaften vollständig berechnet und analysiert.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%=============================================================
+\section{Einleitung und Grundlagen}
+%=============================================================
+
+\subsection{Die Kegelhelix}
+
+Eine \emph{Helix} ist eine Raumkurve, die sich spiralförmig um eine Achse windet~\cite{docarmo,pressley}. Im klassischen Fall der \emph{zylindrischen Helix} bleibt der Radius konstant und Krümmung sowie Torsion sind konstant. Die hier betrachtete Kurve ist eine wesentliche Verallgemeinerung: der Radius wächst linear mit dem Winkel (Archimedische Spirale), während die Höhe ebenfalls linear zunimmt. Die Kurve windet sich daher auf einem \emph{Kegel} und wird als \textbf{Kegelhelix} bezeichnet~\cite{balban2026helix}. Die arithmetisch-zahlentheoretische Herleitung dieser Parametrisierung aus der quadratischen Folge $k(n)=\frac{1}{6}(2n^2+3n+1)$ ist in~\cite{balban2026helix} ausführlich dargestellt; die vorliegende Arbeit konzentriert sich auf die differentialgeometrische Analyse der Kurve.
+
+\begin{definition}[Kegelhelix]\label{def:helix}
+Die Kegelhelix ist die Raumkurve $\gamma : [0, \infty) \to \R^3$, gegeben durch:
+\begin{equation}\label{eq:gamma}
+\boxed{
+\gamma(\theta) =
+\begin{pmatrix}
+\dfrac{6}{\pi^2}\,\theta \cos(\theta) \\[10pt]
+\dfrac{6}{\pi^2}\,\theta \sin(\theta) \\[10pt]
+-\dfrac{3}{4} + \dfrac{3}{\pi}\,\theta
+\end{pmatrix}
+}
+\end{equation}
+mit den Strukturkonstanten:
+\begin{equation}\label{eq:constants}
+a := \frac{6}{\pi^2} \approx 0{,}607927101854027, \qquad
+b := \frac{3}{\pi} \approx 0{,}954929658551372.
+\end{equation}
+\end{definition}
+
+\begin{bemerkung}[Strukturkonstanten]\label{bem:constants}
+Die Spiralkonstante $a = \frac{6}{\pi^2}$ ist der Kehrwert der berühmten Euler-Summe $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$ (Basler Problem, L.~Euler, 1734/1740)~\cite{euler1735,hardy}. Das Verhältnis der Konstanten ist bemerkenswert:
+\begin{equation}\label{eq:ratio}
+\frac{b}{a} = \frac{3/\pi}{6/\pi^2} = \frac{\pi}{2}.
+\end{equation}
+Wie in \cref{sec:kegel} gezeigt wird, ist dieses Verhältnis identisch mit der Kegelsteigung.
+\end{bemerkung}
+
+\subsection{Komponentendarstellung}
+
+In Komponentenform lautet \cref{eq:gamma}:
+\begin{align}
+x(\theta) &= a\theta\cos(\theta), \label{eq:x}\\
+y(\theta) &= a\theta\sin(\theta), \label{eq:y}\\
+z(\theta) &= -\tfrac{3}{4} + b\theta. \label{eq:z}
+\end{align}
+
+Die $xy$-Projektion von $\gamma$ ist die \emph{Archimedische Spirale} $r(\theta) = a\theta$~\cite{archimedes,lawrence,spirale}, während $z(\theta)$ linear von $\theta$ abhängt.
+
+\subsection{Regularität}
+
+\begin{proposition}[Regularität]\label{prop:regular}
+Die Kurve $\gamma$ ist für alle $\theta > 0$ regulär, d.h.\ $\dot{\gamma}(\theta) \neq \vek{0}$.
+\end{proposition}
+
+\begin{proof}
+Es gilt $\dot{z}(\theta) = b = \frac{3}{\pi} > 0$ für alle $\theta$. Daher ist die dritte Komponente des Tangentialvektors stets von null verschieden, womit $\dot{\gamma} \neq \vek{0}$.
+\end{proof}
+
+%=============================================================
+\section{Lage auf dem Kegel}\label{sec:kegel}
+%=============================================================
+
+\begin{satz}[Kegelgleichung]\label{satz:kegel}
+Die Kegelhelix $\gamma$ liegt vollständig auf der Kegelfläche
+\begin{equation}\label{eq:cone}
+\mathcal{K} := \left\{(x,y,z) \in \R^3 \;\middle|\; z = -\frac{3}{4} + \frac{\pi}{2}\sqrt{x^2+y^2}\right\}.
+\end{equation}
+\end{satz}
+
+\begin{proof}
+Der Abstand eines Kurvenpunkts von der $z$-Achse ist:
+\[
+r(\theta) = \sqrt{x(\theta)^2 + y(\theta)^2} = \sqrt{a^2\theta^2\cos^2\theta + a^2\theta^2\sin^2\theta} = a\theta.
+\]
+Einsetzen in die rechte Seite von \cref{eq:cone}:
+\[
+-\frac{3}{4} + \frac{\pi}{2} \cdot a\theta = -\frac{3}{4} + \frac{\pi}{2} \cdot \frac{6}{\pi^2}\theta = -\frac{3}{4} + \frac{3}{\pi}\theta = z(\theta).
+\]
+\end{proof}
+
+\begin{korollar}[Steigung des Kegels]
+Die Steigung der Kegelmantellinie beträgt $\frac{\pi}{2}$, d.h.\ der Kegelwinkel (zur Horizontalen, also zur $xy$-Ebene) ist:
+\begin{equation}
+\psi_{\mathcal{K}} = \arctan\!\left(\frac{\pi}{2}\right) \approx 57{,}518^\circ.
+\end{equation}
+\end{korollar}
+
+\begin{bemerkung}[Zwei Kegelwinkel]\label{bem:kegelwinkel}
+Je nach Konvention werden in der Literatur zwei verschiedene Winkel zur Charakterisierung eines Kegels verwendet:
+\begin{itemize}
+\item Der \emph{Steigungswinkel zur Horizontalen} (zur $xy$-Ebene): $\psi_{\mathcal{K}} = \arctan(\pi/2) \approx 57{,}52^\circ$.
+\item Der \emph{Öffnungswinkel zur Rotationsachse} (zur $z$-Achse): $\alpha = \arctan(2/\pi) \approx 32{,}48^\circ$.
+\end{itemize}
+Beide Winkel sind komplementär: $\psi_{\mathcal{K}} + \alpha = 90^\circ$. Sie sind daher konsistent und beschreiben denselben Kegel aus verschiedenen Bezugsrichtungen.
+\end{bemerkung}
+
+%=============================================================
+\section{Tangentialvektor und Bogenlänge}
+%=============================================================
+
+\subsection{Tangentialvektor}
+
+\begin{proposition}[Tangentialvektor]\label{prop:tangent}
+Der Tangentialvektor $\dot{\gamma}(\theta)$ ist:
+\begin{equation}\label{eq:tangent}
+\dot{\gamma}(\theta) =
+\begin{pmatrix}
+a(\cos\theta - \theta\sin\theta)\\
+a(\sin\theta + \theta\cos\theta)\\
+b
+\end{pmatrix}.
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[Betrag des Tangentialvektors]\label{prop:speed}
+\begin{equation}\label{eq:speed}
+\abs{\dot{\gamma}(\theta)} = \sqrt{a^2(1+\theta^2) + b^2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+\begin{align*}
+\abs{\dot{\gamma}}^2 &= a^2(\cos\theta - \theta\sin\theta)^2 + a^2(\sin\theta + \theta\cos\theta)^2 + b^2 \\
+&= a^2\left[\cos^2\theta - 2\theta\sin\theta\cos\theta + \theta^2\sin^2\theta\right]\\
+&\quad + a^2\left[\sin^2\theta + 2\theta\sin\theta\cos\theta + \theta^2\cos^2\theta\right] + b^2\\
+&= a^2\left[\underbrace{\cos^2\theta + \sin^2\theta}_{=1} + \theta^2\underbrace{(\sin^2\theta + \cos^2\theta)}_{=1}\right] + b^2\\
+&= a^2(1 + \theta^2) + b^2.
+\end{align*}
+\end{proof}
+
+\begin{korollar}[Anfangsgeschwindigkeit]\label{kor:speed0}
+Bei $\theta = 0$ gilt:
+\[
+\abs{\dot{\gamma}(0)} = \sqrt{a^2 + b^2} = \sqrt{\frac{36}{\pi^4} + \frac{9}{\pi^2}} = \frac{3}{\pi}\sqrt{\frac{4}{\pi^2}+1} \approx 1{,}13202.
+\]
+\end{korollar}
+
+\begin{korollar}[Asymptotische Geschwindigkeit]\label{kor:speed_asymp}
+Für $\theta \to \infty$ gilt:
+\[
+\abs{\dot{\gamma}(\theta)} \sim a\theta = \frac{6}{\pi^2}\theta.
+\]
+\end{korollar}
+
+\subsection{Zweite und dritte Ableitung}
+
+\begin{proposition}[Zweite Ableitung]\label{prop:gamma2}
+\begin{equation}\label{eq:gamma2}
+\ddot{\gamma}(\theta) =
+\begin{pmatrix}
+a(-2\sin\theta - \theta\cos\theta)\\
+a(2\cos\theta - \theta\sin\theta)\\
+0
+\end{pmatrix}.
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[Dritte Ableitung]\label{prop:gamma3}
+\begin{equation}\label{eq:gamma3}
+\dddot{\gamma}(\theta) =
+\begin{pmatrix}
+a(-3\cos\theta + \theta\sin\theta)\\
+a(-3\sin\theta - \theta\cos\theta)\\
+0
+\end{pmatrix}.
+\end{equation}
+\end{proposition}
+
+\subsection{Bogenlänge}
+
+\begin{satz}[Bogenlänge]\label{satz:bogen}
+Die Bogenlänge der Kegelhelix von $\theta = 0$ bis $\theta = T$ ist:
+\begin{equation}\label{eq:arc}
+L(T) = \frac{a}{2}\left[T\sqrt{T^2 + c^2} + c^2\,\operatorname{arcsinh}\!\left(\frac{T}{c}\right)\right],
+\end{equation}
+wobei
+\begin{equation}\label{eq:c}
+c^2 := \frac{a^2 + b^2}{a^2} = 1 + \frac{\pi^2}{4} \approx 3{,}4674, \qquad c \approx 1{,}8621.
+\end{equation}
+\end{satz}
+
+\begin{proof}
+Aus \cref{prop:speed} folgt:
+\[
+L(T) = \int_0^T \sqrt{a^2(1+t^2)+b^2}\,dt = a\int_0^T \sqrt{t^2 + \frac{a^2+b^2}{a^2}}\,dt = a\int_0^T\sqrt{t^2+c^2}\,dt.
+\]
+Das Integral $\int\sqrt{t^2+c^2}\,dt = \frac{1}{2}\left[t\sqrt{t^2+c^2}+c^2\,\operatorname{arcsinh}(t/c)\right]$ ist ein Standardintegral~\cite{abramowitz,dlmf}.
+\end{proof}
+
+\begin{bemerkung}[Bedeutung von $c$]
+Die Konstante $c = \sqrt{1+\pi^2/4}$ hängt direkt vom Verhältnis $b/a = \pi/2$ (vgl.~\cref{bem:constants}) ab. Sie bestimmt das Langzeitverhalten der Bogenlänge.
+\end{bemerkung}
+
+\begin{proposition}[Asymptotik der Bogenlänge]\label{prop:arc_asymp}
+Für $T \to \infty$ gilt:
+\begin{equation}
+L(T) \sim \frac{a}{2}T^2 = \frac{3}{\pi^2}T^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Für $T \gg c$: $\sqrt{T^2+c^2} \approx T$ und $\operatorname{arcsinh}(T/c) \approx \ln(2T/c) \ll T^2$.
+\end{proof}
+
+\begin{beispiel}[Bogenlänge pro Windung]\label{bsp:arc}
+Die Bogenlänge der ersten fünf Windungen:
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.6}
+\centering
+\caption{Bogenlänge der Kegelhelix pro Windung}
+\label{tab:arc}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Windung} $n$ & $\theta$: von & $\theta$: bis & \textbf{Bogenlänge} $L$ \\
+\midrule
+1 & $0$ & $2\pi$ & $14{,}5507$ \\
+2 & $2\pi$ & $4\pi$ & $36{,}7221$ \\
+3 & $4\pi$ & $6\pi$ & $60{,}4258$ \\
+4 & $6\pi$ & $8\pi$ & $84{,}3867$ \\
+5 & $8\pi$ & $10\pi$ & $108{,}3747$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Die Gesamtbogenlänge nach $n$ vollen Umdrehungen:
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.6}
+\centering
+\caption{Gesamtbogenlänge nach $n$ Windungen}
+\label{tab:arc_total}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Windungen} $n$ & $\theta_{\max}$ & $r(\theta_{\max})$ & \textbf{Bogenlänge} $L$ \\
+\midrule
+1  & $2\pi$   & $3{,}820$  & $14{,}5507$ \\
+2  & $4\pi$   & $7{,}639$  & $51{,}2728$ \\
+3  & $6\pi$   & $11{,}459$ & $111{,}6985$ \\
+5  & $10\pi$  & $19{,}099$ & $304{,}2361$ \\
+10 & $20\pi$  & $38{,}197$ & $1204{,}9663$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{beispiel}
+
+%=============================================================
+\section{Frenet-Serret-Rahmen}
+%=============================================================
+
+\subsection{Überblick}
+
+Der \emph{Frenet-Serret-Rahmen} (auch begleitendes Dreibein, vgl.~\cite{docarmo,kreyszig,pressley}) ist ein orthonormales Koordinatensystem, das sich entlang der Kurve bewegt und die lokale Geometrie vollständig beschreibt. Er besteht aus drei Vektoren:
+\begin{itemize}
+\item $\vek{T}(\theta)$ -- Tangenteneinheitsvektor (Bewegungsrichtung)
+\item $\vek{N}(\theta)$ -- Hauptnormaleneinheitsvektor (Richtung der Krümmung)
+\item $\vek{B}(\theta)$ -- Binormaleinheitsvektor ($\vek{B} = \vek{T}\times\vek{N}$)
+\end{itemize}
+
+\subsection{Tangentenvektor}
+
+\begin{definition}[Tangenteneinheitsvektor]\label{def:T}
+\begin{equation}\label{eq:T}
+\vek{T}(\theta) = \frac{\dot{\gamma}(\theta)}{\abs{\dot{\gamma}(\theta)}} = \frac{1}{\sqrt{a^2(1+\theta^2)+b^2}}
+\begin{pmatrix}
+a(\cos\theta - \theta\sin\theta)\\
+a(\sin\theta + \theta\cos\theta)\\
+b
+\end{pmatrix}.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Steigungswinkel des Tangentialvektors]\label{prop:pitch}
+Der Winkel $\psi(\theta)$ zwischen $\vek{T}$ und der $xy$-Ebene (Steigungswinkel) ist:
+\begin{equation}\label{eq:pitch}
+\psi(\theta) = \arctan\!\left(\frac{b}{a\sqrt{1+\theta^2}}\right) = \arctan\!\left(\frac{\pi}{2\sqrt{1+\theta^2}}\right).
+\end{equation}
+\end{proposition}
+
+\begin{bemerkung}
+Für $\theta \to 0$ gilt $\psi(0) = \arctan(\pi/2) \approx 57{,}52^\circ$ -- identisch mit dem Kegelwinkel aus \cref{sec:kegel}. Für $\theta \to \infty$ strebt $\psi \to 0^\circ$: die Kurve wird zunehmend flacher.
+\end{bemerkung}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.8}
+\centering
+\caption{Steigungswinkel $\psi(\theta)$ der Kegelhelix}
+\label{tab:pitch}
+\begin{tabular}{ccc}
+\toprule
+$\theta$ & $\psi(\theta)$ (rad) & $\psi(\theta)$ (Grad) \\
+\midrule
+$\theta \to 0$ & $1{,}0039$ & $57{,}517^\circ$ \\
+$\pi/2$        & $0{,}7007$ & $40{,}150^\circ$ \\
+$\pi$          & $0{,}4446$ & $25{,}475^\circ$ \\
+$2\pi$         & $0{,}2421$ & $13{,}869^\circ$ \\
+$4\pi$         & $0{,}1240$ & $7{,}103^\circ$ \\
+$10\pi$        & $0{,}0499$ & $2{,}861^\circ$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Das Kreuzprodukt $\dot{\gamma}\times\ddot{\gamma}$}
+
+\begin{lemma}[Kreuzprodukt]\label{lem:cross}
+Das Kreuzprodukt $\dot{\gamma}\times\ddot{\gamma}$ hat die Komponenten:
+\begin{align}
+(\dot{\gamma}\times\ddot{\gamma})_x &= -ab(2\cos\theta - \theta\sin\theta), \label{eq:cx}\\
+(\dot{\gamma}\times\ddot{\gamma})_y &= -ab(2\sin\theta + \theta\cos\theta), \label{eq:cy}\\
+(\dot{\gamma}\times\ddot{\gamma})_z &= a^2(2+\theta^2). \label{eq:cz}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Mit $\dot{\gamma}$ aus \cref{eq:tangent} und $\ddot{\gamma}$ aus \cref{eq:gamma2}:
+\begin{align*}
+(\dot{\gamma}\times\ddot{\gamma})_z &= \dot{x}\ddot{y} - \dot{y}\ddot{x}\\
+&= a(\cos\theta-\theta\sin\theta)\cdot a(2\cos\theta-\theta\sin\theta)\\
+&\quad - a(\sin\theta+\theta\cos\theta)\cdot a(-2\sin\theta-\theta\cos\theta)\\
+&= a^2\bigl[\cos^2\theta(2-\theta^2) + \sin^2\theta(2-\theta^2) + 2\theta^2\bigr]\\
+&= a^2(2-\theta^2+2\theta^2) = a^2(2+\theta^2). \qedhere
+\end{align*}
+\end{proof}
+
+\begin{proposition}[Betrag des Kreuzprodukts]\label{prop:cross_norm}
+\begin{equation}\label{eq:cross_norm}
+\abs{\dot{\gamma}\times\ddot{\gamma}}^2 = a^2b^2(4+\theta^2) + a^4(2+\theta^2)^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Einsetzen von \cref{eq:cx,eq:cy,eq:cz}:
+\begin{align*}
+\abs{\dot{\gamma}\times\ddot{\gamma}}^2 &= a^2b^2(2\cos\theta-\theta\sin\theta)^2 + a^2b^2(2\sin\theta+\theta\cos\theta)^2 + a^4(2+\theta^2)^2\\
+&= a^2b^2\bigl[(2\cos\theta-\theta\sin\theta)^2+(2\sin\theta+\theta\cos\theta)^2\bigr] + a^4(2+\theta^2)^2\\
+&= a^2b^2(4+\theta^2) + a^4(2+\theta^2)^2. \qedhere
+\end{align*}
+\end{proof}
+
+%=============================================================
+\section{Krümmung}
+%=============================================================
+
+\begin{satz}[Krümmung der Kegelhelix]\label{satz:curvature}
+Die Krümmung $\kappa(\theta)$ der Kegelhelix ist:
+\begin{equation}\label{eq:curvature}
+\kappa(\theta) = \frac{\sqrt{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}}{\left[a^2(1+\theta^2)+b^2\right]^{3/2}}.
+\end{equation}
+Mit $b = \frac{\pi}{2}a$ vereinfacht sich dies zu:
+\begin{equation}\label{eq:curvature2}
+\kappa(\theta) = \frac{a\sqrt{\frac{\pi^2}{4}(4+\theta^2)+(2+\theta^2)^2}}{\left[a^2\left(1+\theta^2+\frac{\pi^2}{4}\right)\right]^{3/2}}.
+\end{equation}
+\end{satz}
+
+\begin{proof}
+Aus der Frenet-Formel $\kappa = \abs{\dot{\gamma}\times\ddot{\gamma}}\,/\,\abs{\dot{\gamma}}^3$ sowie \cref{prop:cross_norm,prop:speed}.
+\end{proof}
+
+\begin{proposition}[Anfangskrümmung]\label{prop:kappa0}
+Bei $\theta = 0$ gilt:
+\begin{equation}
+\kappa(0) = \frac{2a\sqrt{a^2+b^2}}{(a^2+b^2)^{3/2}} = \frac{2a}{a^2+b^2}.
+\end{equation}
+Numerisch: $\kappa(0) = \dfrac{2 \cdot \frac{6}{\pi^2}}{\frac{36}{\pi^4}+\frac{9}{\pi^2}} = \dfrac{4\pi^2}{3(\pi^2+4)} \approx 0{,}948799$.
+\end{proposition}
+
+\begin{proof}
+Für $\theta = 0$ vereinfacht sich der Zähler in \cref{eq:curvature}:
+\[
+\sqrt{a^2b^2(4+0)+a^4(2+0)^2} = \sqrt{4a^2b^2+4a^4} = 2a\sqrt{b^2+a^2}.
+\]
+Der Nenner ist $(a^2 \cdot 1 + b^2)^{3/2} = (a^2+b^2)^{3/2}$. Also:
+\[
+\kappa(0) = \frac{2a\sqrt{a^2+b^2}}{(a^2+b^2)^{3/2}} = \frac{2a}{a^2+b^2}. \qedhere
+\]
+\end{proof}
+
+\begin{proposition}[Asymptotische Krümmung]\label{prop:kappa_asymp}
+Für $\theta \to \infty$ gilt:
+\begin{equation}
+\kappa(\theta) \sim \frac{a}{\theta} = \frac{6}{\pi^2\theta}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Für große $\theta$: Zähler $\sim a^2(2+\theta^2) \sim a^2\theta^2$, Nenner $\sim (a^2\theta^2)^{3/2} = a^3\theta^3$. Also $\kappa \sim a^2\theta^2/(a^3\theta^3) = 1/(a\theta)$.
+\end{proof}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.8}
+\centering
+\caption{Krümmung und Krümmungsradius der Kegelhelix}
+\label{tab:curvature}
+\begin{tabular}{cccc}
+\toprule
+$\theta$ & $\kappa(\theta)$ & $\varrho = 1/\kappa$ & $\abs{\dot{\gamma}(\theta)}$ \\
+\midrule
+$0$      & $0{,}948799$ & $1{,}054$  & $1{,}1320$ \\
+$\pi/2$  & $0{,}681835$ & $1{,}467$  & $1{,}4810$ \\
+$\pi$    & $0{,}446906$ & $2{,}238$  & $2{,}2201$ \\
+$2\pi$   & $0{,}249876$ & $4{,}002$  & $3{,}9839$ \\
+$4\pi$   & $0{,}129307$ & $7{,}734$  & $7{,}7229$ \\
+$10\pi$  & $0{,}052256$ & $19{,}137$ & $19{,}132$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{bemerkung}[Vergleich mit zylindrischer Helix]
+Bei einer \emph{zylindrischen} Helix mit Radius $R$ und Steigung $h$ sind Krümmung $\kappa = R/(R^2+h^2)$ und Torsion $\tau = h/(R^2+h^2)$ \emph{konstant}~\cite{docarmo,pressley}. Bei der Kegelhelix nehmen beide wie $1/\theta$ bzw. $1/\theta^2$ ab -- eine fundamentale geometrische Verallgemeinerung~\cite{gray,struik,izumiya}.
+\end{bemerkung}
+
+%=============================================================
+\section{Torsion}
+%=============================================================
+
+\begin{satz}[Torsion der Kegelhelix]\label{satz:torsion}
+Die Torsion $\tau(\theta)$ der Kegelhelix ist:
+\begin{equation}\label{eq:torsion}
+\tau(\theta) = \frac{a^2b(6+\theta^2)}{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2} = \frac{b(6+\theta^2)}{b^2(4+\theta^2)+a^2(2+\theta^2)^2}.
+\end{equation}
+\end{satz}
+
+\begin{proof}
+Aus der Frenet-Formel $\tau = (\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma}\,/\,\abs{\dot{\gamma}\times\ddot{\gamma}}^2$.
+
+\textbf{Zähler:} Mit $\dddot{\gamma}$ aus \cref{eq:gamma3} und dem Kreuzprodukt aus \cref{lem:cross}:
+\begin{align*}
+(\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma}
+&= -ab(2\cos\theta-\theta\sin\theta)\cdot a(-3\cos\theta+\theta\sin\theta)\\
+&\quad + (-ab)(2\sin\theta+\theta\cos\theta)\cdot a(-3\sin\theta-\theta\cos\theta) + 0\\
+&= a^2b\bigl[(2\cos\theta-\theta\sin\theta)(3\cos\theta-\theta\sin\theta)\\
+&\qquad +(2\sin\theta+\theta\cos\theta)(3\sin\theta+\theta\cos\theta)\bigr]\\
+&= a^2b\bigl[6\cos^2\theta + 6\sin^2\theta + \theta^2\cos^2\theta + \theta^2\sin^2\theta\bigr]\\
+&= a^2b(6+\theta^2).
+\end{align*}
+Der Nenner folgt aus \cref{prop:cross_norm}.
+\end{proof}
+
+\begin{proposition}[Asymptotische Torsion]\label{prop:torsion_asymp}
+Für $\theta \to \infty$ gilt:
+\begin{equation}
+\tau(\theta) \sim \frac{b}{a^2\theta^2} = \frac{3/\pi}{(6/\pi^2)^2\theta^2} = \frac{\pi^3}{12\theta^2}.
+\end{equation}
+\end{proposition}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.8}
+\centering
+\caption{Torsion der Kegelhelix}
+\label{tab:torsion}
+\begin{tabular}{cc}
+\toprule
+$\theta$ & $\tau(\theta)$ \\
+\midrule
+$\theta\to 0$ & $1{,}11774$ \\
+$\pi/2$       & $0{,}60917$ \\
+$\pi$         & $0{,}23417$ \\
+$2\pi$        & $0{,}06429$ \\
+$4\pi$        & $0{,}01631$ \\
+$10\pi$       & $0{,}00262$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{proposition}[Verhältnis $\kappa/\tau$]\label{prop:kappa_tau}
+Das Verhältnis von Krümmung und Torsion ist:
+\begin{equation}
+\frac{\kappa(\theta)}{\tau(\theta)} = \frac{\sqrt{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}}{a^2b(6+\theta^2)/(a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2)^{1/2}} \cdot \frac{1}{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}.
+\end{equation}
+Für $\theta \to \infty$ gilt:
+\begin{equation}
+\frac{\kappa(\theta)}{\tau(\theta)} \sim \frac{a\theta}{b} = \frac{2\theta}{\pi}.
+\end{equation}
+\end{proposition}
+
+%=============================================================
+\section{Hauptnormale und Binormale}
+%=============================================================
+
+\subsection{Hauptnormalenvektor}
+
+\begin{definition}[Hauptnormalenvektor]\label{def:N}
+Der Hauptnormaleneinheitsvektor ist:
+\begin{equation}\label{eq:N}
+\vek{N}(\theta) = \frac{1}{\kappa(\theta)\abs{\dot{\gamma}(\theta)}^2}
+\left(\ddot{\gamma}(\theta) - \frac{\dot{\gamma}(\theta)\cdot\ddot{\gamma}(\theta)}{\abs{\dot{\gamma}(\theta)}^2}\dot{\gamma}(\theta)\right).
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Skalierprodukt $\dot{\gamma}\cdot\ddot{\gamma}$]\label{lem:dotdot}
+\begin{equation}
+\dot{\gamma}\cdot\ddot{\gamma} = a^2\theta.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\begin{align*}
+\dot{\gamma}\cdot\ddot{\gamma}
+&= a(\cos\theta-\theta\sin\theta)\cdot a(-2\sin\theta-\theta\cos\theta)\\
+&\quad + a(\sin\theta+\theta\cos\theta)\cdot a(2\cos\theta-\theta\sin\theta) + b\cdot 0.
+\end{align*}
+Wir entwickeln die beiden Produkte einzeln:
+\begin{align*}
+&a^2(\cos\theta-\theta\sin\theta)(-2\sin\theta-\theta\cos\theta)\\
+&\quad = a^2\bigl[-2\sin\theta\cos\theta - \theta\cos^2\theta + 2\theta\sin^2\theta + \theta^2\sin\theta\cos\theta\bigr],\\[6pt]
+&a^2(\sin\theta+\theta\cos\theta)(2\cos\theta-\theta\sin\theta)\\
+&\quad = a^2\bigl[2\sin\theta\cos\theta - \theta\sin^2\theta + 2\theta\cos^2\theta - \theta^2\sin\theta\cos\theta\bigr].
+\end{align*}
+Durch Addition heben sich die gemischten Terme $\pm 2\sin\theta\cos\theta$ und $\pm\theta^2\sin\theta\cos\theta$ auf:
+\begin{align*}
+\dot{\gamma}\cdot\ddot{\gamma}
+&= a^2\bigl[-\theta\cos^2\theta + 2\theta\sin^2\theta - \theta\sin^2\theta + 2\theta\cos^2\theta\bigr]\\
+&= a^2\bigl[\theta(\cos^2\theta+\sin^2\theta)\bigr]
+= a^2\theta. \qedhere
+\end{align*}
+\end{proof}
+
+\subsection{Binormalvektor}
+
+\begin{definition}[Binormalvektor]\label{def:B}
+Der Binormaleinheitsvektor ist:
+\begin{equation}\label{eq:B}
+\vek{B}(\theta) = \vek{T}(\theta) \times \vek{N}(\theta) = \frac{\dot{\gamma}\times\ddot{\gamma}}{\abs{\dot{\gamma}\times\ddot{\gamma}}}.
+\end{equation}
+\end{definition}
+
+\begin{beispiel}[Frenet-Rahmen bei $\theta = 2\pi$]\label{bsp:frenet}
+Bei $\theta = 2\pi$ ergibt sich numerisch:
+\begin{align*}
+\vek{T}(2\pi) &= \begin{pmatrix}0{,}15259\\0{,}95878\\0{,}23970\end{pmatrix}, &
+\vek{N}(2\pi) &= \begin{pmatrix}-0{,}98555\\0{,}16566\\-0{,}03523\end{pmatrix}, &
+\vek{B}(2\pi) &= \begin{pmatrix}-0{,}07348\\-0{,}23086\\0{,}97021\end{pmatrix}.
+\end{align*}
+Man überprüft: $\abs{\vek{T}} = \abs{\vek{N}} = \abs{\vek{B}} = 1$ und $\vek{T}\perp\vek{N}$, $\vek{T}\perp\vek{B}$, $\vek{N}\perp\vek{B}$.
+\end{beispiel}
+
+%=============================================================
+\section{Frenet-Serret-Formeln}
+%=============================================================
+
+\begin{satz}[Frenet-Serret-Formeln~{\cite{frenet,serret}}]\label{satz:frenet}
+Bezüglich der natürlichen Parametrisierung (Bogenlänge $s$) gelten:
+\begin{equation}\label{eq:frenet}
+\frac{d\vek{T}}{ds} = \kappa\,\vek{N}, \qquad
+\frac{d\vek{N}}{ds} = -\kappa\,\vek{T} + \tau\,\vek{B}, \qquad
+\frac{d\vek{B}}{ds} = -\tau\,\vek{N}.
+\end{equation}
+\end{satz}
+
+\begin{bemerkung}
+Die Frenet-Formeln zeigen, wie sich das Dreibein $(\vek{T},\vek{N},\vek{B})$ entlang der Kurve dreht. Die Krümmung $\kappa$ steuert die Drehung in der $(\vek{T},\vek{N})$-Ebene (Schmiegebene), die Torsion $\tau$ die Drehung um die $\vek{T}$-Achse (Verwindung der Kurve). Nach dem Theorem von Lancret~\cite{lancret,struik} ist eine Raumkurve genau dann eine (verallgemeinerte) Helix, wenn $\kappa/\tau = \mathrm{const}$ gilt. Da f\"{u}r die Kegelhelix $\kappa/\tau \sim 2\theta/\pi \to \infty$, ist sie in diesem Sinn keine Helix -- sondern eine geometrisch reichere Verallgemeinerung.
+\end{bemerkung}
+
+%=============================================================
+\section{Schmieg-, Normal- und Rektifizierebene}
+%=============================================================
+
+\begin{definition}[Ebenen des Frenet-Rahmens]\label{def:planes}
+In jedem regulären Kurvenpunkt $\gamma(\theta)$ definiert der Frenet-Rahmen drei ausgezeichnete Ebenen:
+\begin{itemize}
+\item \textbf{Schmiegebene}: aufgespannt von $\vek{T}$ und $\vek{N}$; enthält die Tangente und die Hauptnormale.
+\item \textbf{Normalebene}: aufgespannt von $\vek{N}$ und $\vek{B}$; steht senkrecht auf der Tangente.
+\item \textbf{Rektifizierebene}: aufgespannt von $\vek{T}$ und $\vek{B}$; enthält Tangente und Binormale.
+\end{itemize}
+\end{definition}
+
+\begin{proposition}[Normalebenengleichung]\label{prop:normalplane}
+Die Normalebene im Punkt $\gamma(\theta_0)$ hat die Gleichung:
+\begin{equation}
+\vek{T}(\theta_0)\cdot\bigl((x,y,z) - \gamma(\theta_0)\bigr) = 0.
+\end{equation}
+\end{proposition}
+
+%=============================================================
+\section{Asymptotisches Verhalten und Grenzwerte}
+%=============================================================
+
+\begin{satz}[Asymptotisches Verhalten]\label{satz:asymp}
+Für $\theta \to \infty$ gelten die folgenden Näherungen:
+\begin{align}
+\abs{\dot{\gamma}(\theta)} &\sim a\theta, \label{eq:asymp_speed}\\
+L(\theta) &\sim \frac{a}{2}\theta^2, \label{eq:asymp_arc}\\
+\kappa(\theta) &\sim \frac{1}{a\theta} = \frac{\pi^2}{6\theta}, \label{eq:asymp_kappa}\\
+\tau(\theta) &\sim \frac{b}{a^2\theta^2} = \frac{\pi^3}{12\theta^2}, \label{eq:asymp_tau}\\
+\psi(\theta) &\sim \frac{b}{a\theta} = \frac{\pi}{2\theta}. \label{eq:asymp_pitch}
+\end{align}
+\end{satz}
+
+\begin{korollar}[Verhältnisse]\label{kor:ratios}
+Für $\theta \to \infty$:
+\begin{equation}
+\frac{\kappa(\theta)}{\tau(\theta)} \sim \frac{2\theta}{\pi}, \qquad
+\frac{\kappa(\theta)}{\psi(\theta)} \sim \frac{2}{\pi^2} \cdot \frac{1}{\theta}.
+\end{equation}
+\end{korollar}
+
+\begin{bemerkung}[Geometrische Deutung]
+Die Kurve nähert sich asymptotisch einer flachen Spirale in der $xy$-Ebene, da $\psi(\theta) \to 0$ und $\kappa(\theta) \to 0$. Gleichzeitig wächst der Radius $r = a\theta \to \infty$: die Kurve entfernt sich unbeschränkt vom Ursprung.
+\end{bemerkung}
+
+%=============================================================
+\section{Numerische Kurvenpunkte}
+%=============================================================
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.6}
+\centering
+\caption{Ausgewählte Kurvenpunkte der Kegelhelix}
+\label{tab:points}
+\begin{tabular}{ccccccc}
+\toprule
+$\theta$ & $x(\theta)$ & $y(\theta)$ & $z(\theta)$ & $r(\theta)$ & $\kappa(\theta)$ & $\tau(\theta)$ \\
+\midrule
+$0$    & $0$        & $0$        & $-0{,}750$ & $0$        & $0{,}9488$ & $1{,}1177$ \\
+$\pi$  & $-1{,}905$ & $0$        & $2{,}250$  & $1{,}905$  & $0{,}4469$ & $0{,}2342$ \\
+$2\pi$ & $3{,}810$  & $0$        & $5{,}250$  & $3{,}810$  & $0{,}2499$ & $0{,}0643$ \\
+$3\pi$ & $-5{,}715$ & $0$        & $8{,}250$  & $5{,}715$  & $0{,}1680$ & $0{,}0286$ \\
+$4\pi$ & $7{,}620$  & $0$        & $11{,}250$ & $7{,}620$  & $0{,}1293$ & $0{,}0163$ \\
+$5\pi$ & $-9{,}524$ & $0$        & $14{,}250$ & $9{,}524$  & $0{,}1037$ & $0{,}0104$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=============================================================
+\section{Übersicht aller Formeln}
+%=============================================================
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{2.0}
+\centering
+\caption{Formelübersicht Teil~1: Parametrisierung, Ableitungen und Bogenlänge}
+\label{tab:summary1}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Eigenschaft} & \textbf{Formel} \\
+\midrule
+\multicolumn{2}{l}{\textit{Parametrisierung}} \\[2pt]
+Konstanten & $a = \dfrac{6}{\pi^2}$, \quad $b = \dfrac{3}{\pi}$, \quad $\dfrac{b}{a} = \dfrac{\pi}{2}$ \\[6pt]
+Kurve $\gamma(\theta)$ & $\left(a\theta\cos\theta,\; a\theta\sin\theta,\; -\tfrac{3}{4}+b\theta\right)$ \\[6pt]
+Kegelgleichung & $z = -\dfrac{3}{4} + \dfrac{\pi}{2}r$ \\[6pt]
+\midrule
+\multicolumn{2}{l}{\textit{Ableitungen}} \\[2pt]
+$\dot{\gamma}(\theta)$ & $\left(a(\cos\theta-\theta\sin\theta),\; a(\sin\theta+\theta\cos\theta),\; b\right)$ \\[6pt]
+$\ddot{\gamma}(\theta)$ & $\left(a(-2\sin\theta-\theta\cos\theta),\; a(2\cos\theta-\theta\sin\theta),\; 0\right)$ \\[6pt]
+$\abs{\dot{\gamma}(\theta)}$ & $\sqrt{a^2(1+\theta^2)+b^2}$ \\[6pt]
+\midrule
+\multicolumn{2}{l}{\textit{Bogenlänge}} \\[2pt]
+$L(T)$ & $\dfrac{a}{2}\!\left[T\sqrt{T^2+c^2}+c^2\operatorname{arcsinh}\!\left(\dfrac{T}{c}\right)\right]$ \\[6pt]
+$c^2$ & $1+\dfrac{\pi^2}{4} \approx 3{,}467$ \\[6pt]
+Asymptotik & $L(T) \sim \dfrac{a}{2}T^2$ \\[6pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{2.0}
+\centering
+\caption{Formelübersicht Teil~2: Frenet-Größen und Identitäten}
+\label{tab:summary2}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Eigenschaft} & \textbf{Formel} \\
+\midrule
+\multicolumn{2}{l}{\textit{Frenet-Größen}} \\[2pt]
+Krümmung $\kappa(\theta)$ & $\dfrac{\sqrt{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}}{\left[a^2(1+\theta^2)+b^2\right]^{3/2}}$ \\[10pt]
+Asymp. Krümmung & $\kappa \sim \dfrac{6}{\pi^2\theta}$ \\[6pt]
+Torsion $\tau(\theta)$ & $\dfrac{b(6+\theta^2)}{b^2(4+\theta^2)+a^2(2+\theta^2)^2}$ \\[10pt]
+Asymp. Torsion & $\tau \sim \dfrac{\pi^3}{12\theta^2}$ \\[6pt]
+Steigungswinkel & $\psi = \arctan\!\left(\dfrac{\pi}{2\sqrt{1+\theta^2}}\right)$ \\[6pt]
+\midrule
+\multicolumn{2}{l}{\textit{Identitäten}} \\[2pt]
+& $\dot{\gamma}\cdot\ddot{\gamma} = a^2\theta$ \\[4pt]
+& $(\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma} = a^2b(6+\theta^2)$ \\[4pt]
+& $\kappa/\tau \sim 2\theta/\pi$ \\[4pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=============================================================
+\section{Fazit}
+%=============================================================
+
+Diese Arbeit hat eine vollständige differentialgeometrische Analyse der Kegelhelix $\gamma(\theta) = \left(a\theta\cos\theta,\, a\theta\sin\theta,\, -\frac{3}{4}+b\theta\right)^T$ präsentiert. Die wichtigsten Ergebnisse lauten:
+
+\begin{enumerate}
+\item Die Kurve liegt auf dem Kegel $z = -\frac{3}{4}+\frac{\pi}{2}r$ (vgl.~\cref{satz:kegel}), da $b/a = \pi/2$ die Kegelsteigung liefert.
+
+\item Tangentialvektor und Bogenlänge sind explizit berechenbar; die Bogenlänge wächst asymptotisch wie $\theta^2$ (vgl.~\cref{satz:bogen,prop:arc_asymp}).
+
+\item Krümmung $\kappa\sim 1/\theta$ und Torsion $\tau\sim 1/\theta^2$ nehmen beide ab -- im Gegensatz zur zylindrischen Helix mit konstanten Werten (vgl.~\cref{satz:curvature,satz:torsion}).
+
+\item Das Kreuzprodukt $(\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma} = a^2b(6+\theta^2)$ liefert eine elegante geschlossene Form für die Torsion (vgl.~\cref{satz:torsion}).
+
+\item Der Frenet-Rahmen ist vollständig bestimmt; die Frenet-Serret-Formeln \cref{satz:frenet} beschreiben seine Entwicklung entlang der Kurve.
+
+\item Die Spiralkonstante $a = 6/\pi^2$, der Kehrwert der Euler-Summe, verleiht der Kurve eine tiefe zahlentheoretische Verbindung (vgl.~\cref{bem:constants}).
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+% ── Eigene Vorarbeiten ──────────────────────────────────────────────────
+\bibitem{spirale}
+D.~Balban,
+\textit{Differentialgeometrische Analyse der Archimedischen Spirale
+$r(\theta) = \frac{6}{\pi^2}\theta$: Krümmung, Bogenlänge, äquidistante
+Parametrisierung und Beziehung zum Goldenen Schnitt},
+Eigenständige mathematische Publikation, 2025.
+
+\bibitem{kegel}
+D.~Balban,
+\textit{Mathematische Analyse der Kegelfläche
+$z = -\frac{3}{4}+\frac{\pi}{2}r$: Parametrisierung, Flächeninhalt,
+Volumen, Krümmung und entwickelbare Flächen},
+Eigenständige mathematische Publikation, 2025.
+
+\bibitem{balban2026helix}
+D.~Balban,
+\textit{Von der quadratischen Folge zur Kegelhelix: Geometrische
+Transformation diophantischer Strukturen und Einbettung der Primzahlen
+im dreidimensionalen Raum},
+Eigenständige mathematische Publikation, 2026.
+
+% ── Klassische Differentialgeometrie ───────────────────────────────────
+\bibitem{docarmo}
+M.~P.~do~Carmo,
+\textit{Differential Geometry of Curves and Surfaces}, revised~ed.
+Dover Publications, Mineola, NY, 2016.\\
+\textit{Standardwerk. Kapitel~1 behandelt reguläre Kurven,
+Bogenlängenparametrisierung, Frenet-Serret-Formeln (Abschnitt~1.5)
+sowie den Fundamentalsatz der Kurventheorie. Direkt relevant für
+Abschnitte~3--7 dieser Arbeit.}
+
+\bibitem{pressley}
+A.~Pressley,
+\textit{Elementary Differential Geometry}, 2nd~ed.
+Springer, London, 2010.\\
+\textit{Einführung mit vielen expliziten Berechnungsbeispielen.
+Abschnitte~2.2--2.4 behandeln Frenet-Rahmen, Krümmung und Torsion
+allgemeiner Raumkurven; Abschnitt~2.4 diskutiert zylindrische Helices
+als Spezialfall konstanter $\kappa$ und $\tau$, von dem die
+Kegelhelix wesentlich abweicht.}
+
+\bibitem{struik}
+D.~J.~Struik,
+\textit{Lectures on Classical Differential Geometry}, 2nd~ed.
+Dover Publications, New York, 1988.\\
+\textit{Klassisches Referenzwerk. Abschnitt~1-7 behandelt Helices
+und ihre Charakterisierung durch konstantes $\kappa/\tau$-Verhältnis
+(Lancret-Theorem). Die Kegelhelix besitzt nicht-konstantes
+$\kappa/\tau \sim 2\theta/\pi$, was ihre Eigenschaft als verallgemeinerte
+Helix im Sinne von Struik illustriert.}
+
+\bibitem{gray}
+A.~Gray, E.~Abbena und S.~Salamon,
+\textit{Modern Differential Geometry of Curves and Surfaces with
+Mathematica}, 3rd~ed.
+Chapman \& Hall/CRC, Boca Raton, FL, 2006.\\
+\textit{Umfassende Behandlung von Kurven und Flächen mit expliziten
+Berechnungen. Kapitel~3 behandelt Frenet-Rahmen und Krümmungsformeln
+in allgemeiner Form; Abschnitt~5.3 diskutiert Spiralen auf Kegeln
+und deren geodätische Eigenschaften.}
+
+\bibitem{kreyszig}
+E.~Kreyszig,
+\textit{Differential Geometry}.
+Dover Publications, New York, 1991 (Nachdruck der Ausgabe von 1959).\\
+\textit{Gründliche klassische Behandlung. Abschnitte~11--14 entwickeln
+die Theorie der Kurven zweiter Art (Torsion), die Frenet-Formeln
+und deren Anwendung auf Helices und Kurven auf Rotationsflächen,
+einschließlich Kegeln.}
+
+% ── Frenet-Serret: historische Quellen ─────────────────────────────────
+\bibitem{frenet}
+J.~F.~Frenet,
+\textit{Sur les courbes à double courbure},
+Thèse, Toulouse, 1847; auch in:
+\textit{Journal de Mathématiques Pures et Appliquées}, Bd.~17,
+S.~437--447, 1852.\\
+\textit{Erste systematische Entwicklung der nach Frenet benannten
+Formeln für Raumkurven. Die Arbeit führt den Tangentenvektor
+$\mathbf{T}$, den Hauptnormalenvektor $\mathbf{N}$ und die
+Krümmungsformel $\kappa = |\ddot{\gamma}|/|\dot{\gamma}|^2$ ein.}
+
+\bibitem{serret}
+J.~A.~Serret,
+\textit{Sur quelques formules relatives à la théorie des courbes
+à double courbure},
+\textit{Journal de Mathématiques Pures et Appliquées}, Bd.~16,
+S.~193--207, 1851.\\
+\textit{Serret entwickelte unabhängig und zeitgleich die Torsionsformel
+und die vollständigen Differentialgleichungen des begleitenden
+Dreibeins. Die Frenet-Serret-Formeln in \cref{satz:frenet} tragen
+den Namen beider Autoren.}
+
+\bibitem{lancret}
+M.~A.~Lancret,
+\textit{Mémoire sur les courbes à double courbure},
+\textit{Mémoires présentés à l'Institut par divers savants}, Bd.~1,
+S.~416--454, 1806.\\
+\textit{Lancret bewies den nach ihm benannten Satz: Eine Kurve ist
+genau dann eine (verallgemeinerte) Helix, wenn das Verhältnis
+$\kappa/\tau$ konstant ist. Da für die Kegelhelix $\kappa/\tau \sim
+2\theta/\pi$ nicht konstant ist, ist sie \emph{keine} Helix
+im Lancretschen Sinn -- eine Tatsache, die ihren besonderen
+geometrischen Charakter unterstreicht.}
+
+% ── Bogenlänge: Standardintegrale ──────────────────────────────────────
+\bibitem{abramowitz}
+M.~Abramowitz und I.~A.~Stegun (Hrsg.),
+\textit{Handbook of Mathematical Functions with Formulas, Graphs,
+and Mathematical Tables}, 10th~ed.
+National Bureau of Standards, Washington, DC, 1972;
+Dover Publications, New York, 1992.\\
+\textit{Die geschlossene Formel für das Bogenlängenintegral
+in \cref{satz:bogen} verwendet das Standardintegral
+$\int\sqrt{t^2+c^2}\,dt = \frac{1}{2}[t\sqrt{t^2+c^2}
++ c^2\operatorname{arcsinh}(t/c)]$; vgl.\ Formel~3.3.30
+und die Tabellen der hyperbolischen Funktionen in Kapitel~4.}
+
+\bibitem{dlmf}
+F.~W.~J.~Olver et~al.\ (Hrsg.),
+\textit{NIST Digital Library of Mathematical Functions},
+Release~1.2.1, 2024, \url{https://dlmf.nist.gov}.\\
+\textit{Online-Referenz für Standardformeln. Abschnitt~4.37
+enthält die vollständige Formelsammlung für den Arkussinus Hyperbolicus
+$\operatorname{arcsinh}$, der in der Bogenlängenformel
+\cref{eq:arc} dieser Arbeit auftritt.}
+
+% ── Archimedische Spirale ───────────────────────────────────────────────
+\bibitem{lawrence}
+J.~D.~Lawrence,
+\textit{A Catalog of Special Plane Curves}.
+Dover Publications, New York, 1972.\\
+\textit{Abschnitt~2.3 behandelt die archimedische Spirale
+$r = a\theta$ ausführlich, einschließlich Bogenlänge (mit
+$\operatorname{arcsinh}$-Formel, S.~186), Krümmung und
+Evolute. Die $xy$-Projektion der in dieser Arbeit untersuchten
+Kegelhelix ist genau diese Spirale mit $a = 6/\pi^2$.}
+
+\bibitem{archimedes}
+Archimedes von Syrakus,
+\textit{Über Spiralen} (\textit{De Spiralibus}),
+ca.~225~v.~Chr.; deutsche Übersetzung und Kommentar in:
+A.~Czwalina (Hrsg.),
+\textit{Archimedes: Werke}, Wissenschaftliche Buchgesellschaft,
+Darmstadt, 1967.\\
+\textit{Historische Quelle der archimedischen Spirale.
+Archimedes definiert die Spirale als Ortskurve eines Punktes,
+der sich gleichförmig auf einem um den Ursprung rotierenden
+Strahl bewegt -- äquivalent zur Polardarstellung $r = a\theta$.}
+
+% ── Baseler Problem / Euler-Summe ───────────────────────────────────────
+\bibitem{euler1735}
+L.~Euler,
+\textit{De summis serierum reciprocarum},
+\textit{Commentarii Academiae Scientiarum Petropolitanae}, Bd.~7,
+S.~123--134, 1740 (vorgelegt 1735).\\
+\textit{Eulers Beweis der Formel $\sum_{n=1}^\infty 1/n^2 = \pi^2/6$
+(Baseler Problem). Die Spiralkonstante $a = 6/\pi^2 = 1/\zeta(2)$
+dieser Arbeit ist der Kehrwert dieser berühmten Summe
+(vgl.\ \cref{bem:constants}).}
+
+\bibitem{hardy}
+G.~H.~Hardy und E.~M.~Wright,
+\textit{An Introduction to the Theory of Numbers}, 6th~ed.
+Oxford University Press, Oxford, 2008.\\
+\textit{Standardwerk der Zahlentheorie. Abschnitt~17.6 enthält einen
+elementaren Beweis der Formel $\zeta(2) = \pi^2/6$; Kapitel~17
+behandelt Erzeugende Funktionen und Dirichlet-Reihen im weiteren
+Kontext.}
+
+% ── Konische und verallgemeinerte Helices ───────────────────────────────
+\bibitem{izumiya}
+S.~Izumiya und N.~Takeuchi,
+\textit{New Special Curves and Developable Surfaces},
+\textit{Turkish Journal of Mathematics}, Bd.~28, Nr.~2,
+S.~153--163, 2004.\\
+\textit{Einführung des Begriffs der \emph{slope lines} auf
+Rotationsflächen, zu denen die Kegelhelix gehört. Die Arbeit zeigt,
+dass Kurven auf entwickelbaren Flächen mit konstantem
+Steigungswinkel zur Mantellinie eine natürliche Verallgemeinerung
+von Helices auf Zylindern bilden.}
+
+\bibitem{ali}
+A.~T.~Ali,
+\textit{Position Vectors of Curves in the Galilean Space $G_3$},
+\textit{Matematički Vesnik}, Bd.~64, Nr.~3, S.~200--210, 2012.\\
+\textit{Enthält allgemeine Formeln für Krümmung und Torsion von
+Kurven auf Rotationsflächen; die Resultate sind direkt mit den
+Ausdrücken für $\kappa(\theta)$ und $\tau(\theta)$ in
+\cref{satz:curvature,satz:torsion} dieser Arbeit vergleichbar.}
+
+\end{thebibliography}
+
+\end{document}
