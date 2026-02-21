@@ -1,0 +1,901 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{afterpage}
+\usepackage{cleveref}
+
+% cleveref names for custom theorem environments
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{example}{Example}{Examples}
+\crefname{equation}{Eq.}{Eqs.}
+\crefname{table}{Table}{Tables}
+\crefname{section}{Section}{Sections}
+
+\geometry{a4paper, margin=2.5cm}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=blue!60!black,
+  urlcolor=blue!60!black,
+  pdftitle={Differential-Geometric Analysis of the Conical Helix},
+  pdfauthor={Dogan Balban},
+  pdfkeywords={conical helix, Frenet-Serret, curvature, torsion, arc length, Archimedean spiral, Basel problem}
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\vek}[1]{\boldsymbol{#1}}
+
+
+\title{\textbf{Differential-Geometric Analysis of the Conical Helix}\\[0.5em]
+\large A Complete Treatment of Curvature, Torsion,\\
+Frenet Frame, Arc Length, and Geometric Properties}
+\author{Dogan Balban}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper presents a complete differential-geometric analysis of the conical helix defined by the parametrization
+\begin{equation*}
+\gamma(\theta) =
+\begin{pmatrix}
+\dfrac{6}{\pi^2}\theta \cos(\theta) \\[8pt]
+\dfrac{6}{\pi^2}\theta \sin(\theta) \\[8pt]
+-\dfrac{3}{4} + \dfrac{3}{\pi}\,\theta
+\end{pmatrix}, \qquad \theta \geq 0.
+\end{equation*}
+The curve combines the properties of an Archimedean spiral (in the $xy$-projection) with a linear increase in height, and lies entirely on the cone $z = -\frac{3}{4} + \frac{\pi}{2}r$. We compute in closed form: the tangent vector, principal normal, binormal (Frenet frame), curvature, torsion, arc length, pitch angle, and the asymptotic behaviour of all these quantities. A key result is that the spiral constant $a = 6/\pi^2 = 1/\zeta(2)$ connects number theory and differential geometry directly.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%=============================================================
+\section{Introduction and Background}
+%=============================================================
+
+\subsection{The Conical Helix}
+
+A \emph{helix} is a space curve that winds spirally around an axis~\cite{docarmo,pressley}. In the classical case of the \emph{cylindrical helix}, the radius remains constant and both curvature and torsion are constant. The curve studied here is a fundamental generalisation: the radius grows linearly with the angle (Archimedean spiral), while the height also increases linearly. The curve therefore winds on a \emph{cone} and is called a \textbf{conical helix}.
+
+\begin{definition}[Conical Helix]\label{def:helix}
+The conical helix is the space curve $\gamma : [0, \infty) \to \R^3$ defined by:
+\begin{equation}\label{eq:gamma}
+\boxed{
+\gamma(\theta) =
+\begin{pmatrix}
+\dfrac{6}{\pi^2}\,\theta \cos(\theta) \\[10pt]
+\dfrac{6}{\pi^2}\,\theta \sin(\theta) \\[10pt]
+-\dfrac{3}{4} + \dfrac{3}{\pi}\,\theta
+\end{pmatrix}
+}
+\end{equation}
+with structural constants
+\begin{equation}\label{eq:constants}
+a := \frac{6}{\pi^2} \approx 0.607927101854027, \qquad
+b := \frac{3}{\pi} \approx 0.954929658551372.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Structural Constants and the Basel Problem]\label{rem:constants}
+The spiral constant $a = 6/\pi^2$ is the reciprocal of the famous Euler sum $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$, known as the Basel problem (L.~Euler, 1734/1740)~\cite{euler1735,hardy}. The ratio of the two constants is remarkable:
+\begin{equation}\label{eq:ratio}
+\frac{b}{a} = \frac{3/\pi}{6/\pi^2} = \frac{\pi}{2}.
+\end{equation}
+As shown in \cref{sec:kegel}, this ratio equals exactly the slope of the cone.
+\end{remark}
+
+\subsection{Component Form}
+
+In component form, \cref{eq:gamma} reads:
+\begin{align}
+x(\theta) &= a\theta\cos(\theta), \label{eq:x}\\
+y(\theta) &= a\theta\sin(\theta), \label{eq:y}\\
+z(\theta) &= -\tfrac{3}{4} + b\theta. \label{eq:z}
+\end{align}
+
+The $xy$-projection of $\gamma$ is the \emph{Archimedean spiral} $r(\theta) = a\theta$~\cite{archimedes,lawrence,spirale}, while $z(\theta)$ depends linearly on $\theta$.
+
+\subsection{Regularity}
+
+\begin{proposition}[Regularity]\label{prop:regular}
+The curve $\gamma$ is regular for all $\theta > 0$, i.e.\ $\dot{\gamma}(\theta) \neq \vek{0}$.
+\end{proposition}
+
+\begin{proof}
+We have $\dot{z}(\theta) = b = 3/\pi > 0$ for all $\theta$. Therefore the third component of the tangent vector is always non-zero, which implies $\dot{\gamma} \neq \vek{0}$.
+\end{proof}
+
+%=============================================================
+\section{Position on the Cone}\label{sec:kegel}
+%=============================================================
+
+\begin{theorem}[Cone Equation]\label{thm:cone}
+The conical helix $\gamma$ lies entirely on the cone
+\begin{equation}\label{eq:cone}
+\mathcal{K} := \left\{(x,y,z) \in \R^3 \;\middle|\; z = -\frac{3}{4} + \frac{\pi}{2}\sqrt{x^2+y^2}\right\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The distance of a curve point from the $z$-axis is:
+\[
+r(\theta) = \sqrt{x(\theta)^2 + y(\theta)^2} = \sqrt{a^2\theta^2\cos^2\theta + a^2\theta^2\sin^2\theta} = a\theta.
+\]
+Substituting into the right-hand side of \cref{eq:cone}:
+\[
+-\frac{3}{4} + \frac{\pi}{2} \cdot a\theta = -\frac{3}{4} + \frac{\pi}{2} \cdot \frac{6}{\pi^2}\theta = -\frac{3}{4} + \frac{3}{\pi}\theta = z(\theta).
+\]
+\end{proof}
+
+\begin{corollary}[Cone Slope]
+The slope of the cone generator is $\pi/2$; the corresponding cone angle from the horizontal ($xy$-plane) is:
+\begin{equation}
+\psi_{\mathcal{K}} = \arctan\!\left(\frac{\pi}{2}\right) \approx 57.518^\circ.
+\end{equation}
+\end{corollary}
+
+\begin{remark}[Two Cone Angles]\label{rem:coneangles}
+Two different angles are used in the literature to characterise a cone, depending on convention:
+\begin{itemize}
+\item The \emph{elevation angle from the horizontal} (from the $xy$-plane): $\psi_{\mathcal{K}} = \arctan(\pi/2) \approx 57.52^\circ$.
+\item The \emph{opening half-angle from the rotation axis} (from the $z$-axis): $\alpha = \arctan(2/\pi) \approx 32.48^\circ$.
+\end{itemize}
+Both angles are complementary: $\psi_{\mathcal{K}} + \alpha = 90^\circ$.
+\end{remark}
+
+%=============================================================
+\section{Tangent Vector and Arc Length}
+%=============================================================
+
+\subsection{Tangent Vector}
+
+\begin{proposition}[Tangent Vector]\label{prop:tangent}
+The tangent vector $\dot{\gamma}(\theta)$ is:
+\begin{equation}\label{eq:tangent}
+\dot{\gamma}(\theta) =
+\begin{pmatrix}
+a(\cos\theta - \theta\sin\theta)\\
+a(\sin\theta + \theta\cos\theta)\\
+b
+\end{pmatrix}.
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[Speed]\label{prop:speed}
+\begin{equation}\label{eq:speed}
+\abs{\dot{\gamma}(\theta)} = \sqrt{a^2(1+\theta^2) + b^2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+\begin{align*}
+\abs{\dot{\gamma}}^2 &= a^2(\cos\theta - \theta\sin\theta)^2 + a^2(\sin\theta + \theta\cos\theta)^2 + b^2 \\
+&= a^2\left[\cos^2\theta - 2\theta\sin\theta\cos\theta + \theta^2\sin^2\theta\right]\\
+&\quad + a^2\left[\sin^2\theta + 2\theta\sin\theta\cos\theta + \theta^2\cos^2\theta\right] + b^2\\
+&= a^2\left[\underbrace{\cos^2\theta + \sin^2\theta}_{=1} + \theta^2\underbrace{(\sin^2\theta + \cos^2\theta)}_{=1}\right] + b^2\\
+&= a^2(1 + \theta^2) + b^2.
+\end{align*}
+\end{proof}
+
+\begin{corollary}[Initial Speed]\label{cor:speed0}
+Bei $\theta = 0$ gilt:
+\[
+\abs{\dot{\gamma}(0)} = \sqrt{a^2 + b^2} = \sqrt{\frac{36}{\pi^4} + \frac{9}{\pi^2}} = \frac{3}{\pi}\sqrt{\frac{4}{\pi^2}+1} \approx 1.13202.
+\]
+\end{corollary}
+
+\begin{corollary}[Asymptotic Speed]\label{cor:speed_asymp}
+For $\theta \to \infty$:
+\[
+\abs{\dot{\gamma}(\theta)} \sim a\theta = \frac{6}{\pi^2}\theta.
+\]
+\end{corollary}
+
+\subsection{Second and Third Derivatives}
+
+\begin{proposition}[Second Derivative]\label{prop:gamma2}
+\begin{equation}\label{eq:gamma2}
+\ddot{\gamma}(\theta) =
+\begin{pmatrix}
+a(-2\sin\theta - \theta\cos\theta)\\
+a(2\cos\theta - \theta\sin\theta)\\
+0
+\end{pmatrix}.
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[Third Derivative]\label{prop:gamma3}
+\begin{equation}\label{eq:gamma3}
+\dddot{\gamma}(\theta) =
+\begin{pmatrix}
+a(-3\cos\theta + \theta\sin\theta)\\
+a(-3\sin\theta - \theta\cos\theta)\\
+0
+\end{pmatrix}.
+\end{equation}
+\end{proposition}
+
+\subsection{Arc Length}
+
+\begin{theorem}[Arc Length]\label{thm:arc}
+The arc length of the conical helix from $\theta = 0$ to $\theta = T$ is:
+\begin{equation}\label{eq:arc}
+L(T) = \frac{a}{2}\left[T\sqrt{T^2 + c^2} + c^2\,\operatorname{arcsinh}\!\left(\frac{T}{c}\right)\right],
+\end{equation}
+where
+\begin{equation}\label{eq:c}
+c^2 := \frac{a^2 + b^2}{a^2} = 1 + \frac{\pi^2}{4} \approx 3.4674, \qquad c \approx 1.8621.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From \cref{prop:speed}:
+\[
+L(T) = \int_0^T \sqrt{a^2(1+t^2)+b^2}\,dt = a\int_0^T \sqrt{t^2 + \frac{a^2+b^2}{a^2}}\,dt = a\int_0^T\sqrt{t^2+c^2}\,dt.
+\]
+Das Integral $\int\sqrt{t^2+c^2}\,dt = \frac{1}{2}\left[t\sqrt{t^2+c^2}+c^2\,\operatorname{arcsinh}(t/c)\right]$ is a standard integral~\cite{abramowitz,dlmf}.
+\end{proof}
+
+\begin{remark}[The Constant $c$]
+The constant $c = \sqrt{1+\pi^2/4}$ follows directly from the ratio $b/a = \pi/2$ (cf.~\cref{rem:constants}). It governs the long-run growth rate of the arc length.
+\end{remark}
+
+\begin{proposition}[Asymptotic Arc Length]\label{prop:arc_asymp}
+For $T \to \infty$:
+\begin{equation}
+L(T) \sim \frac{a}{2}T^2 = \frac{3}{\pi^2}T^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $T \gg c$: $\sqrt{T^2+c^2} \approx T$ and $\operatorname{arcsinh}(T/c) \approx \ln(2T/c) = o(T^2)$, so the dominant term is $\frac{a}{2}T^2$.
+\end{proof}
+
+\begin{example}[Arc Length per Revolution]\label{ex:arc}
+Arc length of the first five revolutions:
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.6}
+\centering
+\caption{Arc length of the conical helix per revolution}
+\label{tab:arc}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Revolution} $n$ & $\theta$: from & $\theta$: to & \textbf{Arc length} $L$ \\
+\midrule
+1 & $0$ & $2\pi$ & $14.5507$ \\
+2 & $2\pi$ & $4\pi$ & $36.7221$ \\
+3 & $4\pi$ & $6\pi$ & $60.4258$ \\
+4 & $6\pi$ & $8\pi$ & $84.3867$ \\
+5 & $8\pi$ & $10\pi$ & $108.3747$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cumulative arc length after $n$ full revolutions:
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.6}
+\centering
+\caption{Cumulative arc length after $n$ revolutions}
+\label{tab:arc_total}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Revolutions} $n$ & $\theta_{\max}$ & $r(\theta_{\max})$ & \textbf{Arc length} $L$ \\
+\midrule
+1  & $2\pi$   & $3.820$  & $14.5507$ \\
+2  & $4\pi$   & $7.639$  & $51.2728$ \\
+3  & $6\pi$   & $11.459$ & $111.6985$ \\
+5  & $10\pi$  & $19.099$ & $304.2361$ \\
+10 & $20\pi$  & $38.197$ & $1204.9663$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{example}
+
+%=============================================================
+\section{The Frenet--Serret Frame}
+%=============================================================
+
+\subsection{Overview}
+
+The \emph{Frenet--Serret frame} (also called the moving trihedron, cf.~\cite{docarmo,kreyszig,pressley}) is an orthonormal coordinate system that moves along the curve and completely describes its local geometry. Er besteht aus drei Vektoren:
+\begin{itemize}
+\item $\vek{T}(\theta)$ -- unit tangent vector (direction of motion),
+\item $\vek{N}(\theta)$ -- principal normal unit vector (direction of curvature),
+\item $\vek{B}(\theta)$ -- binormal unit vector ($\vek{B} = \vek{T}\times\vek{N}$).
+\end{itemize}
+
+\subsection{Unit Tangent Vector}
+
+\begin{definition}[Unit Tangent Vector]\label{def:T}
+\begin{equation}\label{eq:T}
+\vek{T}(\theta) = \frac{\dot{\gamma}(\theta)}{\abs{\dot{\gamma}(\theta)}} = \frac{1}{\sqrt{a^2(1+\theta^2)+b^2}}
+\begin{pmatrix}
+a(\cos\theta - \theta\sin\theta)\\
+a(\sin\theta + \theta\cos\theta)\\
+b
+\end{pmatrix}.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Pitch Angle]\label{prop:pitch}
+The angle $\psi(\theta)$ between $\vek{T}$ and the $xy$-plane (pitch angle) is:
+\begin{equation}\label{eq:pitch}
+\psi(\theta) = \arctan\!\left(\frac{b}{a\sqrt{1+\theta^2}}\right) = \arctan\!\left(\frac{\pi}{2\sqrt{1+\theta^2}}\right).
+\end{equation}
+\end{proposition}
+
+\begin{remark}
+At $\theta \to 0$: $\psi(0) = \arctan(\pi/2) \approx 57.52^\circ$, exactly the cone angle from \cref{sec:kegel}. As $\theta \to \infty$, $\psi \to 0^\circ$: the curve becomes increasingly flat.
+\end{remark}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.8}
+\centering
+\caption{Pitch angle $\psi(\theta)$ of the conical helix}
+\label{tab:pitch}
+\begin{tabular}{ccc}
+\toprule
+$\theta$ & $\psi(\theta)$ (rad) & $\psi(\theta)$ (degrees) \\
+\midrule
+$\theta \to 0$ & $1.0039$ & $57.517^\circ$ \\
+$\pi/2$        & $0.7007$ & $40.150^\circ$ \\
+$\pi$          & $0.4446$ & $25.475^\circ$ \\
+$2\pi$         & $0.2421$ & $13.869^\circ$ \\
+$4\pi$         & $0.1240$ & $7.103^\circ$ \\
+$10\pi$        & $0.0499$ & $2.861^\circ$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The Cross Product $\dot{\gamma}\times\ddot{\gamma}$}
+
+\begin{lemma}[Cross Product]\label{lem:cross}
+The cross product $\dot{\gamma}\times\ddot{\gamma}$ has components:
+\begin{align}
+(\dot{\gamma}\times\ddot{\gamma})_x &= -ab(2\cos\theta - \theta\sin\theta), \label{eq:cx}\\
+(\dot{\gamma}\times\ddot{\gamma})_y &= -ab(2\sin\theta + \theta\cos\theta), \label{eq:cy}\\
+(\dot{\gamma}\times\ddot{\gamma})_z &= a^2(2+\theta^2). \label{eq:cz}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Using $\dot{\gamma}$ from \cref{eq:tangent} and $\ddot{\gamma}$ from \cref{eq:gamma2}:
+\begin{align*}
+(\dot{\gamma}\times\ddot{\gamma})_z &= \dot{x}\ddot{y} - \dot{y}\ddot{x}\\
+&= a(\cos\theta-\theta\sin\theta)\cdot a(2\cos\theta-\theta\sin\theta)\\
+&\quad - a(\sin\theta+\theta\cos\theta)\cdot a(-2\sin\theta-\theta\cos\theta)\\
+&= a^2\bigl[\cos^2\theta(2-\theta^2) + \sin^2\theta(2-\theta^2) + 2\theta^2\bigr]\\
+&= a^2(2-\theta^2+2\theta^2) = a^2(2+\theta^2). \qedhere
+\end{align*}
+\end{proof}
+
+\begin{proposition}[Norm of the Cross Product]\label{prop:cross_norm}
+\begin{equation}\label{eq:cross_norm}
+\abs{\dot{\gamma}\times\ddot{\gamma}}^2 = a^2b^2(4+\theta^2) + a^4(2+\theta^2)^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Inserting \cref{eq:cx,eq:cy,eq:cz}:
+\begin{align*}
+\abs{\dot{\gamma}\times\ddot{\gamma}}^2 &= a^2b^2(2\cos\theta-\theta\sin\theta)^2 + a^2b^2(2\sin\theta+\theta\cos\theta)^2 + a^4(2+\theta^2)^2\\
+&= a^2b^2\bigl[(2\cos\theta-\theta\sin\theta)^2+(2\sin\theta+\theta\cos\theta)^2\bigr] + a^4(2+\theta^2)^2\\
+&= a^2b^2(4+\theta^2) + a^4(2+\theta^2)^2. \qedhere
+\end{align*}
+\end{proof}
+
+%=============================================================
+\section{Curvature}
+%=============================================================
+
+\begin{theorem}[Curvature of the Conical Helix]\label{thm:curvature}
+The curvature $\kappa(\theta)$ of the conical helix is:
+\begin{equation}\label{eq:curvature}
+\kappa(\theta) = \frac{\sqrt{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}}{\left[a^2(1+\theta^2)+b^2\right]^{3/2}}.
+\end{equation}
+Using $b = \frac{\pi}{2}a$, this simplifies to:
+\begin{equation}\label{eq:curvature2}
+\kappa(\theta) = \frac{a\sqrt{\frac{\pi^2}{4}(4+\theta^2)+(2+\theta^2)^2}}{\left[a^2\left(1+\theta^2+\frac{\pi^2}{4}\right)\right]^{3/2}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Follows from the Frenet formula $\kappa = \abs{\dot{\gamma}\times\ddot{\gamma}}/\abs{\dot{\gamma}}^3$ together with \cref{prop:cross_norm,prop:speed}.
+\end{proof}
+
+\begin{proposition}[Initial Curvature]\label{prop:kappa0}
+Bei $\theta = 0$ gilt:
+\begin{equation}
+\kappa(0) = \frac{2a\sqrt{a^2+b^2}}{(a^2+b^2)^{3/2}} = \frac{2a}{a^2+b^2}
+= \frac{4\pi^2}{3(\pi^2+4)} \approx 0.948799.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Setting $\theta = 0$ in \cref{eq:curvature}, the numerator becomes:
+\[
+\sqrt{a^2b^2(4+0)+a^4(2+0)^2} = \sqrt{4a^2b^2+4a^4} = 2a\sqrt{b^2+a^2}.
+\]
+The denominator is $(a^2 \cdot 1 + b^2)^{3/2} = (a^2+b^2)^{3/2}$. Hence:
+\[
+\kappa(0) = \frac{2a\sqrt{a^2+b^2}}{(a^2+b^2)^{3/2}} = \frac{2a}{a^2+b^2}. \qedhere
+\]
+\end{proof}
+
+\begin{proposition}[Asymptotic Curvature]\label{prop:kappa_asymp}
+For $\theta \to \infty$:
+\begin{equation}
+\kappa(\theta) \sim \frac{a}{\theta} = \frac{6}{\pi^2\theta}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For large $\theta$: numerator $\sim a^2\theta^2$, denominator $\sim a^3\theta^3$, so $\kappa \sim 1/(a\theta)$.
+\end{proof}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.8}
+\centering
+\caption{Curvature and radius of curvature of the conical helix}
+\label{tab:curvature}
+\begin{tabular}{cccc}
+\toprule
+$\theta$ & $\kappa(\theta)$ & $\varrho = 1/\kappa$ & $\abs{\dot{\gamma}(\theta)}$ \\
+\midrule
+$0$      & $0.948799$ & $1.054$  & $1.1320$ \\
+$\pi/2$  & $0.681835$ & $1.467$  & $1.4810$ \\
+$\pi$    & $0.446906$ & $2.238$  & $2.2201$ \\
+$2\pi$   & $0.249876$ & $4.002$  & $3.9839$ \\
+$4\pi$   & $0.129307$ & $7.734$  & $7.7229$ \\
+$10\pi$  & $0.052256$ & $19.137$ & $19.132$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[Comparison with the Cylindrical Helix]
+For a \emph{cylindrical helix} with radius $R$ and pitch $h$, both curvature $\kappa = R/(R^2+h^2)$ and torsion $\tau = h/(R^2+h^2)$ are \emph{constant}~\cite{docarmo,pressley}. For the conical helix both decrease monotonically ($\kappa \sim 1/\theta$, $\tau \sim 1/\theta^2$) -- a fundamental geometric generalisation~\cite{gray,struik,izumiya}.
+\end{remark}
+
+%=============================================================
+\section{Torsion}
+%=============================================================
+
+\begin{theorem}[Torsion of the Conical Helix]\label{thm:torsion}
+The torsion $\tau(\theta)$ of the conical helix is:
+\begin{equation}\label{eq:torsion}
+\tau(\theta) = \frac{a^2b(6+\theta^2)}{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2} = \frac{b(6+\theta^2)}{b^2(4+\theta^2)+a^2(2+\theta^2)^2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Using the formula $\tau = (\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma}/\abs{\dot{\gamma}\times\ddot{\gamma}}^2$.
+
+\textbf{Numerator.} Using $\dddot{\gamma}$ from \cref{eq:gamma3} and the cross product from \cref{lem:cross}:
+\begin{align*}
+(\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma}
+&= -ab(2\cos\theta-\theta\sin\theta)\cdot a(-3\cos\theta+\theta\sin\theta)\\
+&\quad + (-ab)(2\sin\theta+\theta\cos\theta)\cdot a(-3\sin\theta-\theta\cos\theta) + 0\\
+&= a^2b\bigl[(2\cos\theta-\theta\sin\theta)(3\cos\theta-\theta\sin\theta)\\
+&\qquad +(2\sin\theta+\theta\cos\theta)(3\sin\theta+\theta\cos\theta)\bigr]\\
+&= a^2b\bigl[6\cos^2\theta + 6\sin^2\theta + \theta^2\cos^2\theta + \theta^2\sin^2\theta\bigr]\\
+&= a^2b(6+\theta^2).
+\end{align*}
+The denominator is $\abs{\dot{\gamma}\times\ddot{\gamma}}^2$ from \cref{prop:cross_norm}.
+\end{proof}
+
+\begin{proposition}[Asymptotic Torsion]\label{prop:torsion_asymp}
+For $\theta \to \infty$:
+\begin{equation}
+\tau(\theta) \sim \frac{b}{a^2\theta^2} = \frac{3/\pi}{(6/\pi^2)^2\theta^2} = \frac{\pi^3}{12\theta^2}.
+\end{equation}
+\end{proposition}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.8}
+\centering
+\caption{Torsion of the conical helix}
+\label{tab:torsion}
+\begin{tabular}{cc}
+\toprule
+$\theta$ & $\tau(\theta)$ \\
+\midrule
+$\theta\to 0$ & $1.11774$ \\
+$\pi/2$       & $0.60917$ \\
+$\pi$         & $0.23417$ \\
+$2\pi$        & $0.06429$ \\
+$4\pi$        & $0.01631$ \\
+$10\pi$       & $0.00262$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{proposition}[Ratio $\kappa/\tau$]\label{prop:kappa_tau}
+The ratio of curvature and torsion satisfies:
+\begin{equation}
+\frac{\kappa(\theta)}{\tau(\theta)} = \frac{\sqrt{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}}{a^2b(6+\theta^2)/(a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2)^{1/2}} \cdot \frac{1}{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}.
+\end{equation}
+For $\theta \to \infty$:
+\begin{equation}
+\frac{\kappa(\theta)}{\tau(\theta)} \sim \frac{a\theta}{b} = \frac{2\theta}{\pi}.
+\end{equation}
+\end{proposition}
+
+%=============================================================
+\section{Principal Normal and Binormal Vectors}
+%=============================================================
+
+\subsection{Principal Normal Vector}
+
+\begin{definition}[Principal Normal Vector]\label{def:N}
+The principal unit normal vector is:
+\begin{equation}\label{eq:N}
+\vek{N}(\theta) = \frac{1}{\kappa(\theta)\abs{\dot{\gamma}(\theta)}^2}
+\left(\ddot{\gamma}(\theta) - \frac{\dot{\gamma}(\theta)\cdot\ddot{\gamma}(\theta)}{\abs{\dot{\gamma}(\theta)}^2}\dot{\gamma}(\theta)\right).
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Inner Product $\dot{\gamma}\cdot\ddot{\gamma}$]\label{lem:dotdot}
+\begin{equation}
+\dot{\gamma}\cdot\ddot{\gamma} = a^2\theta.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\begin{align*}
+\dot{\gamma}\cdot\ddot{\gamma}
+&= a(\cos\theta-\theta\sin\theta)\cdot a(-2\sin\theta-\theta\cos\theta)\\
+&\quad + a(\sin\theta+\theta\cos\theta)\cdot a(2\cos\theta-\theta\sin\theta) + b\cdot 0.
+\end{align*}
+Expanding the two products individually:
+\begin{align*}
+&a^2(\cos\theta-\theta\sin\theta)(-2\sin\theta-\theta\cos\theta)\\
+&\quad = a^2\bigl[-2\sin\theta\cos\theta - \theta\cos^2\theta
++ 2\theta\sin^2\theta + \theta^2\sin\theta\cos\theta\bigr],\\[6pt]
+&a^2(\sin\theta+\theta\cos\theta)(2\cos\theta-\theta\sin\theta)\\
+&\quad = a^2\bigl[2\sin\theta\cos\theta - \theta\sin^2\theta
++ 2\theta\cos^2\theta - \theta^2\sin\theta\cos\theta\bigr].
+\end{align*}
+On addition the mixed terms $\pm 2\sin\theta\cos\theta$ and
+$\pm\theta^2\sin\theta\cos\theta$ cancel:
+\begin{align*}
+\dot{\gamma}\cdot\ddot{\gamma}
+&= a^2\bigl[\theta(\cos^2\theta+\sin^2\theta)\bigr] = a^2\theta. \qedhere
+\end{align*}
+\end{proof}
+
+\subsection{Binormal Vector}
+
+\begin{definition}[Binormal Vector]\label{def:B}
+The unit binormal vector is:
+\begin{equation}\label{eq:B}
+\vek{B}(\theta) = \vek{T}(\theta) \times \vek{N}(\theta) = \frac{\dot{\gamma}\times\ddot{\gamma}}{\abs{\dot{\gamma}\times\ddot{\gamma}}}.
+\end{equation}
+\end{definition}
+
+\begin{example}[Frenet Frame at $\theta = 2\pi$]\label{ex:frenet}
+At $\theta = 2\pi$, numerically:
+\begin{align*}
+\vek{T}(2\pi) &= \begin{pmatrix}0{,}15259\\0{,}95878\\0{,}23970\end{pmatrix}, &
+\vek{N}(2\pi) &= \begin{pmatrix}-0{,}98555\\0{,}16566\\-0{,}03523\end{pmatrix}, &
+\vek{B}(2\pi) &= \begin{pmatrix}-0{,}07348\\-0{,}23086\\0{,}97021\end{pmatrix}.
+\end{align*}
+One verifies: $\abs{\vek{T}} = \abs{\vek{N}} = \abs{\vek{B}} = 1$ and $\vek{T}\perp\vek{N}$, $\vek{T}\perp\vek{B}$, $\vek{N}\perp\vek{B}$.
+\end{example}
+
+%=============================================================
+\section{The Frenet--Serret Equations}
+%=============================================================
+
+\begin{theorem}[Frenet--Serret Equations~{\cite{frenet,serret}}]\label{thm:frenet}
+With respect to the natural parametrization (arc length $s$):
+\begin{equation}\label{eq:frenet}
+\frac{d\vek{T}}{ds} = \kappa\,\vek{N}, \qquad
+\frac{d\vek{N}}{ds} = -\kappa\,\vek{T} + \tau\,\vek{B}, \qquad
+\frac{d\vek{B}}{ds} = -\tau\,\vek{N}.
+\end{equation}
+\end{theorem}
+
+\begin{remark}
+The Frenet--Serret equations describe how the trihedron $(\vek{T},\vek{N},\vek{B})$ rotates along the curve. Curvature $\kappa$ governs rotation in the osculating plane; torsion $\tau$ governs the twisting about the tangent axis. By Lancret's theorem~\cite{lancret,struik}, a space curve is a (generalised) helix if and only if $\kappa/\tau = \mathrm{const}$. Since for the conical helix $\kappa/\tau \sim 2\theta/\pi \to \infty$, it is not a helix in this classical sense, but a geometrically richer generalisation.
+\end{remark}
+
+%=============================================================
+\section{Osculating, Normal, and Rectifying Planes}
+%=============================================================
+
+\begin{definition}[Planes of the Frenet Frame]\label{def:planes}
+At every regular point $\gamma(\theta)$, the Frenet frame defines three distinguished planes:
+\begin{itemize}
+\item \textbf{Osculating plane}: spanned by $\vek{T}$ and $\vek{N}$; contains the tangent and the principal normal.
+\item \textbf{Normal plane}: spanned by $\vek{N}$ and $\vek{B}$; perpendicular to the tangent.
+\item \textbf{Rectifying plane}: spanned by $\vek{T}$ and $\vek{B}$; contains the tangent and the binormal.
+\end{itemize}
+\end{definition}
+
+\begin{proposition}[Normal Plane Equation]\label{prop:normalplane}
+The normal plane at the point $\gamma(\theta_0)$ has the equation:
+\begin{equation}
+\vek{T}(\theta_0)\cdot\bigl((x,y,z) - \gamma(\theta_0)\bigr) = 0.
+\end{equation}
+\end{proposition}
+
+%=============================================================
+\section{Asymptotic Behaviour}
+%=============================================================
+
+\begin{theorem}[Asymptotic Behaviour]\label{thm:asymp}
+As $\theta \to \infty$, the following asymptotic approximations hold:
+\begin{align}
+\abs{\dot{\gamma}(\theta)} &\sim a\theta, \label{eq:asymp_speed}\\
+L(\theta) &\sim \frac{a}{2}\theta^2, \label{eq:asymp_arc}\\
+\kappa(\theta) &\sim \frac{1}{a\theta} = \frac{\pi^2}{6\theta}, \label{eq:asymp_kappa}\\
+\tau(\theta) &\sim \frac{b}{a^2\theta^2} = \frac{\pi^3}{12\theta^2}, \label{eq:asymp_tau}\\
+\psi(\theta) &\sim \frac{b}{a\theta} = \frac{\pi}{2\theta}. \label{eq:asymp_pitch}
+\end{align}
+\end{theorem}
+
+\begin{corollary}[Asymptotic Ratios]\label{cor:ratios}
+For $\theta \to \infty$:
+\begin{equation}
+\frac{\kappa(\theta)}{\tau(\theta)} \sim \frac{2\theta}{\pi}, \qquad
+\frac{\kappa(\theta)}{\psi(\theta)} \sim \frac{2}{\pi^2} \cdot \frac{1}{\theta}.
+\end{equation}
+\end{corollary}
+
+\begin{remark}[Geometric Interpretation]
+Asymptotically the curve approaches a flat spiral in the $xy$-plane since $\psi(\theta) \to 0$ and $\kappa(\theta) \to 0$. At the same time, the radius $r = a\theta \to \infty$: the curve moves unboundedly away from the origin.
+\end{remark}
+
+%=============================================================
+\section{Numerical Curve Points}
+%=============================================================
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.6}
+\centering
+\caption{Selected points on the conical helix}
+\label{tab:points}
+\begin{tabular}{ccccccc}
+\toprule
+$\theta$ & $x(\theta)$ & $y(\theta)$ & $z(\theta)$ & $r(\theta)$ & $\kappa(\theta)$ & $\tau(\theta)$ \\
+\midrule
+$0$    & $0$        & $0$        & $-0.750$ & $0$        & $0.9488$ & $1.1177$ \\
+$\pi$  & $-1{,}905$ & $0$        & $2.250$  & $1.905$  & $0.4469$ & $0.2342$ \\
+$2\pi$ & $3.810$  & $0$        & $5.250$  & $3.810$  & $0{,}2499$ & $0.0643$ \\
+$3\pi$ & $-5{,}715$ & $0$        & $8.250$  & $5.715$  & $0.1680$ & $0.0286$ \\
+$4\pi$ & $7.620$  & $0$        & $11.250$ & $7.620$  & $0.1293$ & $0.0163$ \\
+$5\pi$ & $-9{,}524$ & $0$        & $14.250$ & $9.524$  & $0.1037$ & $0.0104$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=============================================================
+\section{Summary of Formulae}
+%=============================================================
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{2.0}
+\centering
+\caption{Formula Summary Part~1: Parametrization, Derivatives, and Arc Length}
+\label{tab:summary1}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Quantity} & \textbf{Formula} \\
+\midrule
+\multicolumn{2}{l}{\textit{Parametrization}} \\[2pt]
+Constants & $a = \dfrac{6}{\pi^2} = \dfrac{1}{\zeta(2)}$, \quad $b = \dfrac{3}{\pi}$, \quad $\dfrac{b}{a} = \dfrac{\pi}{2}$ \\[6pt]
+Curve $\gamma(\theta)$ & $\left(a\theta\cos\theta,\; a\theta\sin\theta,\; -\tfrac{3}{4}+b\theta\right)$ \\[6pt]
+Cone equation & $z = -\dfrac{3}{4} + \dfrac{\pi}{2}r$ \\[6pt]
+\midrule
+\multicolumn{2}{l}{\textit{Derivatives}} \\[2pt]
+$\dot{\gamma}(\theta)$ & $\left(a(\cos\theta-\theta\sin\theta),\; a(\sin\theta+\theta\cos\theta),\; b\right)$ \\[6pt]
+$\ddot{\gamma}(\theta)$ & $\left(a(-2\sin\theta-\theta\cos\theta),\; a(2\cos\theta-\theta\sin\theta),\; 0\right)$ \\[6pt]
+$\abs{\dot{\gamma}(\theta)}$ & $\sqrt{a^2(1+\theta^2)+b^2}$ \\[6pt]
+\midrule
+\multicolumn{2}{l}{\textit{Arc Length}} \\[2pt]
+$L(T)$ & $\dfrac{a}{2}\!\left[T\sqrt{T^2+c^2}+c^2\operatorname{arcsinh}\!\left(\dfrac{T}{c}\right)\right]$ \\[6pt]
+$c^2$ & $1+\dfrac{\pi^2}{4} \approx 3{,}467$ \\[6pt]
+Asymptotic & $L(T) \sim \dfrac{a}{2}T^2$ \\[6pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{2.0}
+\centering
+\caption{Formula Summary Part~2: Frenet Quantities and Identities}
+\label{tab:summary2}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Quantity} & \textbf{Formula} \\
+\midrule
+\multicolumn{2}{l}{\textit{Frenet Quantities}} \\[2pt]
+Curvature $\kappa(\theta)$ & $\dfrac{\sqrt{a^2b^2(4+\theta^2)+a^4(2+\theta^2)^2}}{\left[a^2(1+\theta^2)+b^2\right]^{3/2}}$ \\[10pt]
+Asymptotic curvature & $\kappa \sim \dfrac{\pi^2}{6\theta}$ \\[6pt]
+Torsion $\tau(\theta)$ & $\dfrac{b(6+\theta^2)}{b^2(4+\theta^2)+a^2(2+\theta^2)^2}$ \\[10pt]
+Asymptotic torsion & $\tau \sim \dfrac{\pi^3}{12\theta^2}$ \\[6pt]
+Pitch angle & $\psi = \arctan\!\left(\dfrac{\pi}{2\sqrt{1+\theta^2}}\right)$ \\[6pt]
+\midrule
+\multicolumn{2}{l}{\textit{Identities}} \\[2pt]
+& $\dot{\gamma}\cdot\ddot{\gamma} = a^2\theta$ \\[4pt]
+& $(\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma} = a^2b(6+\theta^2)$ \\[4pt]
+& $\kappa/\tau \sim 2\theta/\pi$ \\[4pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=============================================================
+\section{Conclusion}
+%=============================================================
+
+This paper has presented a complete differential-geometric analysis of the conical helix $\gamma(\theta) = \left(a\theta\cos\theta,\, a\theta\sin\theta,\, -\frac{3}{4}+b\theta\right)^T$ präsentiert. The main results are:
+
+\begin{enumerate}
+\item The curve lies on the cone $z = -\frac{3}{4}+\frac{\pi}{2}r$ (cf.~\cref{thm:cone}), because $b/a = \pi/2$ provides exactly the cone slope.
+
+\item The tangent vector and arc length are given in closed form; the arc length grows asymptotically as $\theta^2$ (cf.~\cref{thm:arc,prop:arc_asymp}).
+
+\item Curvature $\kappa\sim 1/\theta$ and torsion $\tau\sim 1/\theta^2$ both decrease monotonically, in contrast to the cylindrical helix with constant values (cf.~\cref{thm:curvature,thm:torsion}). The non-constant ratio $\kappa/\tau \sim 2\theta/\pi$ confirms by Lancret's theorem that the conical helix is not a classical helix.
+
+\item The triple product $(\dot{\gamma}\times\ddot{\gamma})\cdot\dddot{\gamma} = a^2b(6+\theta^2)$ yields an elegant closed form for the torsion (cf.~\cref{thm:torsion}).
+
+\item The Frenet frame is completely determined; the Frenet--Serret equations (\cref{thm:frenet}) describe its evolution along the curve.
+
+\item The spiral constant $a = 6/\pi^2 = 1/\zeta(2)$, the reciprocal of the Euler sum, gives the curve a deep number-theoretic connection (cf.~\cref{rem:constants}).
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+% Own works
+\bibitem{spirale}
+D.~Balban,
+\textit{Differential-Geometric Analysis of the Archimedean Spiral
+$r(\theta) = \frac{6}{\pi^2}\theta$: Curvature, Arc Length, Equidistant
+Parametrization, and Connection to the Basel Problem},
+Independent mathematical publication, 2025.
+
+\bibitem{kegel}
+D.~Balban,
+\textit{Mathematical Analysis of the Cone
+$z = -\frac{3}{4}+\frac{\pi}{2}r$: Parametrization, Surface Area,
+Volume, Curvature, and Developable Surfaces},
+Independent mathematical publication, 2025.
+
+\bibitem{balban2026helix}
+D.~Balban,
+\textit{From the Quadratic Sequence to the Conical Helix: Geometric
+Transformation of Diophantine Structures and Embedding of Primes
+in Three-Dimensional Space},
+Independent mathematical publication, 2026.
+
+% Classical differential geometry
+\bibitem{docarmo}
+M.~P.~do~Carmo,
+\textit{Differential Geometry of Curves and Surfaces}, revised~ed.
+Dover Publications, Mineola, NY, 2016.
+
+\bibitem{pressley}
+A.~Pressley,
+\textit{Elementary Differential Geometry}, 2nd~ed.
+Springer, London, 2010.
+
+\bibitem{struik}
+D.~J.~Struik,
+\textit{Lectures on Classical Differential Geometry}, 2nd~ed.
+Dover Publications, New York, 1988.
+
+\bibitem{gray}
+A.~Gray, E.~Abbena, and S.~Salamon,
+\textit{Modern Differential Geometry of Curves and Surfaces with Mathematica}, 3rd~ed.
+Chapman \& Hall/CRC, Boca Raton, FL, 2006.
+
+\bibitem{kreyszig}
+E.~Kreyszig,
+\textit{Differential Geometry}.
+Dover Publications, New York, 1991.
+
+% Frenet-Serret: historical
+\bibitem{frenet}
+J.~F.~Frenet,
+\textit{Sur les courbes à double courbure},
+Doctoral thesis, Toulouse, 1847; also in:
+\textit{Journal de Mathématiques Pures et Appliquées}, Vol.~17, pp.~437--447, 1852.
+
+\bibitem{serret}
+J.~A.~Serret,
+\textit{Sur quelques formules relatives à la théorie des courbes à double courbure},
+\textit{Journal de Mathématiques Pures et Appliquées}, Vol.~16, pp.~193--207, 1851.
+
+\bibitem{lancret}
+M.~A.~Lancret,
+\textit{Mémoire sur les courbes à double courbure},
+\textit{Mémoires présentés à l'Institut par divers savants}, Vol.~1, pp.~416--454, 1806.
+
+% Standard integrals
+\bibitem{abramowitz}
+M.~Abramowitz and I.~A.~Stegun (eds.),
+\textit{Handbook of Mathematical Functions}, 10th~ed.
+Dover Publications, New York, 1992.
+
+\bibitem{dlmf}
+F.~W.~J.~Olver et~al.\ (eds.),
+\textit{NIST Digital Library of Mathematical Functions},
+Release~1.2.1, 2024, \url{https://dlmf.nist.gov}.
+
+% Archimedean spiral
+\bibitem{lawrence}
+J.~D.~Lawrence,
+\textit{A Catalog of Special Plane Curves}.
+Dover Publications, New York, 1972.
+
+\bibitem{archimedes}
+Archimedes of Syracuse,
+\textit{On Spirals} (\textit{De Spiralibus}), ca.~225~\textsc{bc};
+English translation: T.~L.~Heath,
+\textit{The Works of Archimedes},
+Cambridge University Press, 1897; Dover reprint, 2002.
+
+% Basel problem
+\bibitem{euler1735}
+L.~Euler,
+\textit{De summis serierum reciprocarum},
+\textit{Commentarii Academiae Scientiarum Petropolitanae}, Vol.~7,
+pp.~123--134, 1740 (presented 1735).
+
+\bibitem{hardy}
+G.~H.~Hardy and E.~M.~Wright,
+\textit{An Introduction to the Theory of Numbers}, 6th~ed.
+Oxford University Press, Oxford, 2008.
+
+% Conical helices
+\bibitem{izumiya}
+S.~Izumiya and N.~Takeuchi,
+\textit{New Special Curves and Developable Surfaces},
+\textit{Turkish Journal of Mathematics}, Vol.~28, No.~2, pp.~153--163, 2004.
+
+\bibitem{ali}
+A.~T.~Ali,
+\textit{Position Vectors of Curves in the Galilean Space $G_3$},
+\textit{Matematički Vesnik}, Vol.~64, No.~3, pp.~200--210, 2012.
+
+\end{thebibliography}
+
+\end{document}
