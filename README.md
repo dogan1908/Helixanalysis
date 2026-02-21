@@ -166,6 +166,8 @@ If you use this work, please cite it as:
   url     = {https://github.com/doganbalban/conical-helix-analysis}
 }
 ```
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18725185.svg)](https://doi.org/10.5281/zenodo.18725185)
+
 
 ---
 
